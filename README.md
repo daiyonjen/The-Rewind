@@ -23,7 +23,7 @@
 ---
 
 ## How to Play
-1. Open `index.html` in any modern web browser.
+1. Open `https://daiyonjen.github.io/The-Rewind/' in any modern web browser.
 2. Enter your player name.
 3. Choose either **Single Player** or **Host Game Room**.
 4. Select a genre and click **Start Round**.
