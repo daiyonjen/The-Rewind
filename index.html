@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Rewind</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="skyline-glow" aria-hidden="true"></div>
+  <div class="skyline" aria-hidden="true">
+    <span class="building building-one"></span>
+    <span class="building building-two"></span>
+    <span class="building building-three"></span>
+    <span class="building building-four"></span>
+    <span class="building building-five"></span>
+    <span class="building building-six"></span>
+    <span class="building building-seven"></span>
+    <span class="building building-eight"></span>
+  </div>
+
+  <main class="app-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Philadelphia Sunset Edition</p>
+        <h1>The Rewind</h1>
+        <p class="hero-text">
+          Choose a mode, pick a playlist, and finish each lyric before the 15-second sprint runs out.
+        </p>
+      </div>
+
+      <aside class="card hero-note">
+        <h2>How It Works</h2>
+        <p>
+          Enter a player name, choose either single-player or host mode, then answer 12 lyric
+          questions as fast as you can. Every finished round is saved to the main-menu leaderboard.
+        </p>
+      </aside>
+    </section>
+
+    <section class="menu-layout" id="menu-view">
+      <section class="card setup-card">
+        <div class="section-head">
+          <div>
+            <p class="section-label">Pregame Menu</p>
+            <h2>Build Your Round</h2>
+          </div>
+          <p class="section-copy">Twelve questions, four answer choices, one fast sprint per turn.</p>
+        </div>
+
+        <div class="setup-grid">
+          <div class="setup-block">
+            <label class="input-label" for="player-name">Player Name</label>
+            <input id="player-name" class="text-input" type="text" maxlength="20" placeholder="Player 1">
+          </div>
+
+          <div class="setup-block">
+            <span class="input-label">Game Options</span>
+            <div class="mode-grid" aria-label="Game mode selection">
+              <button class="mode-button active" type="button" data-mode="single">Single Player</button>
+              <button class="mode-button" type="button" data-mode="host">Host Game Room</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="host-card hidden" id="host-card">
+          <div>
+            <p class="section-label">Room Code</p>
+            <h3 id="room-code">PHL-0000</h3>
+          </div>
+          <p class="host-copy">
+            Share this code for a pass-and-play style hosted session with friends.
+          </p>
+        </div>
+
+        <div class="section-head compact">
+          <div>
+            <p class="section-label">Genre Select</p>
+            <h2>Choose Your Playlist</h2>
+          </div>
+        </div>
+
+        <div class="genre-grid" aria-label="Genre selection">
+          <button class="genre-button active" type="button" data-genre="pop">Pop Classics</button>
+          <button class="genre-button" type="button" data-genre="rnb">2000's R&amp;B Hits</button>
+          <button class="genre-button" type="button" data-genre="hits2010">2010's Popular Hits</button>
+          <button class="genre-button genre-bey" type="button" data-genre="beyonce">Beyonc&eacute; Discography</button>
+        </div>
+
+        <button class="primary-button" id="start-button" type="button">Start Round</button>
+      </section>
+
+      <aside class="card leaderboard-card">
+        <div class="section-head compact">
+          <div>
+            <p class="section-label">Leaderboard</p>
+            <h2>Main Menu Scores</h2>
+          </div>
+        </div>
+        <p class="leaderboard-copy">
+          The top local rounds stay here after every finished game.
+        </p>
+        <ol class="leaderboard-list" id="leaderboard-list"></ol>
+        <p class="leaderboard-empty hidden" id="leaderboard-empty">
+          Finish a round to create the first leaderboard entry.
+        </p>
+      </aside>
+    </section>
+
+    <section class="card game-card hidden" id="game-view">
+      <div class="status-grid">
+        <div class="status-tile">
+          <span class="status-label">Mode</span>
+          <span class="status-value" id="current-mode">Single Player</span>
+        </div>
+        <div class="status-tile">
+          <span class="status-label">Genre</span>
+          <span class="status-value" id="current-genre">Pop Classics</span>
+        </div>
+        <div class="status-tile">
+          <span class="status-label">Question</span>
+          <span class="status-value"><span id="question-number">1</span> / 12</span>
+        </div>
+        <div class="status-tile">
+          <span class="status-label">Score</span>
+          <span class="status-value" id="score">0</span>
+        </div>
+        <div class="status-tile">
+          <span class="status-label">Streak</span>
+          <span class="status-value" id="streak">0</span>
+        </div>
+      </div>
+
+      <div class="timer-card">
+        <div class="timer-row">
+          <span class="timer-label">The 15-Second Sprint</span>
+          <span class="timer-value"><span id="time-left">15</span>s left</span>
+        </div>
+        <div class="timer-track" aria-hidden="true">
+          <div class="timer-bar" id="timer-bar"></div>
+        </div>
+      </div>
+
+      <div class="prompt-card">
+        <p class="prompt-tag">Finish the lyric</p>
+        <h2 class="lyric-line" id="lyric-line">Loading lyric...</h2>
+        <p class="song-credit" id="song-credit"></p>
+      </div>
+
+      <div class="choice-grid" id="choices" aria-label="Answer choices"></div>
+      <p class="feedback" id="feedback" aria-live="polite">Choose the missing word before time runs out.</p>
+    </section>
+
+    <section class="card result-card hidden" id="result-view">
+      <p class="section-label">Round Complete</p>
+      <h2>That Set Is In The Books</h2>
+      <p class="result-text" id="result-text"></p>
+      <div class="result-actions">
+        <button class="primary-button" id="play-again-button" type="button">Play Again</button>
+        <button class="secondary-button" id="back-to-menu-button" type="button">Back To Menu</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
